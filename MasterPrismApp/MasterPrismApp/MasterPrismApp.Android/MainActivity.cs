@@ -16,6 +16,7 @@ namespace MasterPrismApp.Droid
 
             base.OnCreate(bundle);
 
+            Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
             global::Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App(new AndroidInitializer()));
         }

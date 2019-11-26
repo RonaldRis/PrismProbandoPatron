@@ -1,4 +1,5 @@
 ﻿using MasterPrismApp.Models;
+using Prism.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,7 +33,19 @@ namespace MasterPrismApp.Views
 
             var seleccionado = e.SelectedItem as MasterMenuItem;
             MainPage Root = Application.Current.MainPage as MainPage;
-            Root.ChangedDetailPage(seleccionado);
+            var pagethis = PageUtilities.GetCurrentPage(Application.Current.MainPage);
+            try
+            {
+                MainPage mainpageprueba = (MainPage)PageUtilities.GetCurrentPage(Application.Current.MainPage);
+                mainpageprueba.ChangedDetailPage(seleccionado);
+            }
+            catch (Exception) { }
+
+            try
+            {
+                Root.ChangedDetailPage(seleccionado);
+            }
+            catch (Exception) { }
 
             ((ListView)sender).SelectedItem = null;
         }

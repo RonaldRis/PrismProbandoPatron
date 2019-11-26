@@ -8,7 +8,7 @@ using System.Text;
 
 namespace MasterPrismApp.ViewModels
 {
-    public class MainPageViewModel : Prism.Mvvm.
+    public class MainPageViewModel : Prism.Services.Dialogs.
     {
         public MainPageViewModel(INavigationService navigationService)
             : base(navigationService)

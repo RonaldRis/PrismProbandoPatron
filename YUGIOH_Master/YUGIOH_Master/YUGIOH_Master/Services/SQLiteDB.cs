@@ -1,12 +1,12 @@
 ﻿
-
-namespace CrossAppMaster.Models
+namespace YUGIOH_Master.Services
 {
-
     using SQLite;
     using System;
     using System.Diagnostics;
     using System.IO;
+    using Models;
+
     public class SQLiteDB : IDisposable
     {
         private SQLiteAsyncConnection connection { get; set; }

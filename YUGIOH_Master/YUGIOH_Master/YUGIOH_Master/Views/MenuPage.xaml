@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:YUGIOH_Master.Models"
+             mc:Ignorable="d"
+             x:Class="YUGIOH_Master.Views.MenuPage"
+             Title="Menu">
+             
+    <StackLayout VerticalOptions="FillAndExpand">
+        <ListView 
+                    HasUnevenRows="True"
+                  ItemSelected="ListViewMenu_ItemSelected">
+            <ListView.ItemsSource>
+                <x:Array Type="{x:Type model:HomeMenuItem}">
+                    <model:HomeMenuItem Title="All Cards" Type="AllCards" Icon="xamarin_logo.png" />
+                    <model:HomeMenuItem Title="My Cards" Type="MyCards" Icon="xamarin_logo.png" />
+                </x:Array>
+            </ListView.ItemsSource>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Padding="10" Orientation="Horizontal">
+                            <Label Text="{Binding Title}"  FontSize="20"/>
+                            <Image Source="{Binding Icon}"  
+                                   HeightRequest="20" FlowDirection="RightToLeft"
+                                   />
+                        </StackLayout>
+
+                        <ViewCell.ContextActions>
+                            <MenuItem Text="fuck you thunder"/>
+                        </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+</ContentPage>

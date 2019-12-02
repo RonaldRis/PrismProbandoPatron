@@ -40,16 +40,14 @@ namespace YUGIOH_Master.Views
             ((ListView)sender).SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
-        {
-        }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            if (viewModel.AllCardsDecks == null)
+                Task.Run(() => viewModel.LoadItemsCommand.Execute(null)).Wait();
 
-            if (viewModel.Items.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            viewModel.IsBusy = false;
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)

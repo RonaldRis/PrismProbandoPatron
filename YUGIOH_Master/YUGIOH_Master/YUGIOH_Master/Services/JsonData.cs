@@ -47,7 +47,8 @@ namespace YUGIOH_Master.Services
             try
             {
                 var assembly = IntrospectionExtensions.GetTypeInfo(typeof(JsonData)).Assembly;
-                Stream stream = assembly.GetManifestResourceStream("YUGIOH_Master.CardsData.json");
+                string resourceName = $"YUGIOH_Master.CardsData.json";
+                Stream stream = assembly.GetManifestResourceStream(resourceName);
 
                 using (var reader = new System.IO.StreamReader(stream))
                 {

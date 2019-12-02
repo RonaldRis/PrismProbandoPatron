@@ -1,8 +1,7 @@
 ﻿using DLToolkit.Forms.Controls;
-using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-using YUGIOH_Master.Services;
+using YUGIOH_Master.Patterns;
 using YUGIOH_Master.Views;
 
 namespace YUGIOH_Master
@@ -12,9 +11,25 @@ namespace YUGIOH_Master
 
         public App()
         {
+            //var tareas = new[]
+            //{
+            //    new Task(async()=>await Singleton.Instance.VerifyCardsJson()),
+            //    new Task(async () =>
+            //    {
+            //        while (Singleton.Cards == null)
+            //        {
+            //            await Task.Delay(2000);
+            //            await Singleton.Instance.VerifyCardsJson();
+            //        }
+            //    })
+            //};
+            //Task.WhenAll(tareas);
+            Task.Run(async () => await Singleton.Instance.VerifyCardsJson()).Wait();
+
             InitializeComponent();
             FlowListView.Init();
-            DependencyService.Register<MockDataStore>();
+
+            
             MainPage = new MainPage();
         }
 

@@ -70,14 +70,18 @@ namespace YUGIOH_Master.Patterns
 
         public async Task VerifyCardsJson()
         {
-            if (!this._LocalJson.ExistsSavedJsonData())
+            if (Cards==null)
             {
-                Cards = await this.LocalJson.ReadOriginalData();
+                if (!this._LocalJson.ExistsSavedJsonData())
+                {
+                    Cards = await this.LocalJson.ReadOriginalData();
+                }
+                else
+                {
+                    Cards = await this._LocalJson.ReadSavedData();
+                }
             }
-            else
-            {
-                Cards = await this._LocalJson.ReadSavedData();
-            }
+            
         }
 
         #endregion

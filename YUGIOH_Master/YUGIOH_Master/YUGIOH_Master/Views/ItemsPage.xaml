@@ -13,34 +13,16 @@
              xmlns:cells="clr-namespace:YUGIOH_Master.Cells"
             >
     <ContentPage.Resources>
-        <x:Double x:Key="AlturaImagen"/>
 
         <Style x:Key="LabelTitle" TargetType="Label">
             <Setter Property="FontAttributes" Value="Bold"/>
         </Style>
-
-        <!--<Style x:Key="ImageSizes" TargetType="Image">
-            <Setter Property="HeightRequest">
-                <Setter.Value>
-                    <OnPlatform x:TypeArguments="x:Double">
-                        <OnPlatform.Android> 
-                            <OnIdiom x:TypeArguments="x:Double" Default="20"/>
-                        </OnPlatform.Android>
-                    </OnPlatform>
-                </Setter.Value>
-            </Setter>
-        </Style>-->
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"  />
     </ContentPage.ToolbarItems>
 
-    <RefreshView IsRefreshing="{Binding IsBusy, Mode=TwoWay}"
-                 BackgroundColor="LightBlue"
-                 Command="{Binding LoadItemsCommand}"
-                 
-                 RefreshColor="DarkBlue">
         <ScrollView Orientation="Vertical">
             <StackLayout>
 
@@ -102,16 +84,19 @@
 
                 <Label Text="Pendulum Monster Cards"
                        Style="{StaticResource LabelTitle}"/>
-                <StackLayout
-	                BindableLayout.ItemsSource="{Binding AllCardsDecks.pendulum_monster_cards}"
-	                Orientation="Horizontal"
-	                >
-	                <BindableLayout.ItemTemplate>
-	                    <DataTemplate>
-	                        <cells:CardCellView/>
-	                    </DataTemplate>
-	                </BindableLayout.ItemTemplate>
-	            </StackLayout>
+                <ScrollView Orientation="Horizontal">
+                    <StackLayout
+	                        BindableLayout.ItemsSource="{Binding AllCardsDecks.pendulum_monster_cards}"
+	                        Orientation="Horizontal"
+	                        >
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <cells:CardCellView/>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+                    
 
 
 
@@ -135,10 +120,10 @@
 
                 <Label Text="Monster Cards"
                        Style="{StaticResource LabelTitle}"/>
-                <!--AllCardsDecks.monster_cards-->
+                
                 <ScrollView Orientation="Horizontal">
                 	<StackLayout
-	                    BindableLayout.ItemsSource="{Binding Singleton.Instance.Cards.monster_cards}"
+	                    BindableLayout.ItemsSource="{Binding AllCardsDecks.monster_cards}"
 	                    Orientation="Horizontal"
 	                        BackgroundColor="LightBlue"
 	                    >
@@ -283,36 +268,36 @@
                 </StackLayout>-->
 
 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                <!--<flv:FlowListView
-                    IsVisible="False"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <Label Text="xyz_monster_cards"
+                       Style="{StaticResource LabelTitle}"/>
+
+                <flv:FlowListView
                     FlowColumnCount="2"
                     FlowItemsSource="{Binding AllCardsDecks.xyz_monster_cards}"
                     FlowIsLoadingInfinite="{Binding IsBusy}"
@@ -328,20 +313,11 @@
 
                     <flv:FlowListView.FlowColumnTemplate>
                         <DataTemplate>
-                            <StackLayout Margin="5,5,5,10"  HorizontalOptions="Center">
-                                <Label Text="{Binding card.title_english}"
-                                           HorizontalOptions="Center"
-                                           FontAttributes="Bold"/>
-                                <Label Text="{Binding card.raritySelected}"/>
-                                <Label Text="{Binding card.atk}"/>
-                                <Image Source="{Binding card.imageSelected}"
-                                           HeightRequest="200"/>
-
-                            </StackLayout>
+                            <cells:CardCellView/>
                         </DataTemplate>
                     </flv:FlowListView.FlowColumnTemplate>
 
-                </flv:FlowListView>-->
+                </flv:FlowListView>
 
 
 
@@ -352,19 +328,10 @@
                           HasUnevenRows="True"
                       
                           >
-                <cells:CardCellView/>
 
                     <ListView.ItemTemplate>
-                        <DataTemplate> 
-                        
-                            <ViewCell>
-                                <StackLayout Margin="5" >
-                                    <Label Text="{Binding card.title_english}"/>
-                                    <Image Source="{Binding card.imageSelected}"
-                                           HeightRequest="200"/>
-
-                                </StackLayout>
-                            </ViewCell>
+                        <DataTemplate>
+                            <cells:CardCellView/>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>-->
@@ -412,6 +379,6 @@
                 </ListView>-->
             </StackLayout>
         </ScrollView>
-    </RefreshView>
+
 
 </ContentPage>

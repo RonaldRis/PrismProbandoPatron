@@ -20,7 +20,7 @@ namespace YUGIOH_Master.UWP
         public MainPage()
         {
             this.InitializeComponent();
-
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
             LoadApplication(new YUGIOH_Master.App());
         }
     }

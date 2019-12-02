@@ -41,9 +41,10 @@ namespace YUGIOH_Master.Models
         public string updated_at { get; set; }
         public string url { get; set; }
         public bool is_forbidden { get; set; }
-        public bool is_limited { get; set; }
+        public bool is_limited { get; set; }    
         public string imageSelected { get; set; }
         public string raritySelected { get; set; }
+        public bool isCardInDeck { get; set; }
     }
 
     public class CardSet

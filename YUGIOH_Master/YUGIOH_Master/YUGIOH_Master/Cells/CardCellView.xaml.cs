@@ -10,11 +10,16 @@ using Xamarin.Forms.Xaml;
 namespace YUGIOH_Master.Cells
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CardCellView : ViewCell
+    public partial class CardCellView : Frame
     {
         public CardCellView()
         {
             InitializeComponent();
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            //Open a Modal!
         }
     }
 }

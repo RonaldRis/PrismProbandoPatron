@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 using YUGIOH_Master.Models;
+using YUGIOH_Master.Patterns;
 using YUGIOH_Master.Services;
 using YUGIOH_Master.Views;
 
 namespace YUGIOH_Master.ViewModels
 {
+
     public class ItemsViewModel : BaseViewModel
     {
         private AllCardsData _AllCardsDecks;
@@ -22,6 +24,8 @@ namespace YUGIOH_Master.ViewModels
             set => SetProperty(ref _AllCardsDecks, value);
             get => _AllCardsDecks;
         }
+
+
         public ItemsViewModel()
         {
             Title = "All Cards";
@@ -46,124 +50,144 @@ namespace YUGIOH_Master.ViewModels
 
             try
             {
-                Items.Clear();
-                using (var cliente = new RestClient())
+                await Singleton.Instance.VerifyCardsJson(); 
+                IsBusy = true;
+                AllCardsDecks = Singleton.Instance.Cards;//Para mientras xd
+                IsBusy = true;
+                if (!Singleton.Instance.LocalJson.ExistsSavedJsonData())
                 {
-                    AllCardsDecks = await cliente.GetElement<AllCardsData>(YugiOhAPI.Cards);
-                }
+                    #region SavedCardsWithLinks
+
+                    var allCardsConverted = new AllCardsData();
 
 
-                var allCardsConverted = new AllCardsData();
-
-
-                allCardsConverted.link_monster_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.link_monster_cards)
-                {
-                    if (card.card_sets.Count>0)
+                    IsBusy = true;
+                    allCardsConverted.link_monster_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.link_monster_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.link_monster_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card.isCardInDeck = false;
+                            carta.card_sets = null;
+                            allCardsConverted.link_monster_cards.Add(carta);
+                        }
                     }
-                }
 
-                allCardsConverted.monster_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.monster_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.monster_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.monster_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.monster_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.isCardInDeck = false;
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.monster_cards.Add(carta);
+                        }
                     }
-                }
+                    IsBusy = true;
 
-                allCardsConverted.pendulum_monster_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.pendulum_monster_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.pendulum_monster_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.pendulum_monster_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.pendulum_monster_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.isCardInDeck = false;
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.pendulum_monster_cards.Add(carta);
+                        }
                     }
-                }
 
 
-                allCardsConverted.ritual_monster_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.ritual_monster_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.ritual_monster_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.ritual_monster_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.ritual_monster_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.isCardInDeck = false;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.ritual_monster_cards.Add(carta);
+                        }
                     }
-                }
 
+                    IsBusy = true;
 
-                allCardsConverted.spell_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.spell_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.spell_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.spell_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.spell_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.isCardInDeck = false;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.spell_cards.Add(carta);
+                        }
                     }
-                }
 
 
-                allCardsConverted.synchro_monster_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.synchro_monster_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.synchro_monster_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.synchro_monster_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.synchro_monster_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.isCardInDeck = false;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.synchro_monster_cards.Add(carta);
+                        }
                     }
-                }
 
+                    IsBusy = true;
 
-                allCardsConverted.trap_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.trap_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.trap_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.trap_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.trap_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.isCardInDeck = false;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.trap_cards.Add(carta);
+                        }
                     }
-                }
 
 
-                allCardsConverted.xyz_monster_cards = new System.Collections.Generic.List<card_data_sets>();
-                foreach (var card in AllCardsDecks.xyz_monster_cards)
-                {
-                    if (card.card_sets.Count > 0)
+                    allCardsConverted.xyz_monster_cards = new System.Collections.Generic.List<card_data_sets>();
+                    foreach (var card in Singleton.Instance.Cards.xyz_monster_cards)
                     {
-                        var carta = card;
-                        carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
-                        carta.card.raritySelected = card.card_sets[0].rarity;
-                        allCardsConverted.xyz_monster_cards.Add(carta);
+                        if (card.card_sets.Count > 0)
+                        {
+                            var carta = card;
+                            carta.card.isCardInDeck = false;
+                            carta.card.imageSelected = $"https://yugioh-card-api.kaishiyoku.rocks/api/v1/cards/from_set/{card.card_sets[0].identifier}/image";
+                            carta.card.raritySelected = card.card_sets[0].rarity;
+                            carta.card_sets = null;
+                            allCardsConverted.xyz_monster_cards.Add(carta);
+                        }
                     }
-                }
 
-                AllCardsDecks = allCardsConverted;
+                    #endregion
 
+                    IsBusy = true;
 
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    Items.Add(item);
+                    AllCardsDecks = allCardsConverted;
+                    Singleton.Instance.SavedDatainJson_Singleton(AllCardsDecks);
                 }
             }
             catch (Exception ex)

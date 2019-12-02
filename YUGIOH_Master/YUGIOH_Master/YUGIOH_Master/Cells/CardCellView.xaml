@@ -1,13 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       xmlns:ffimage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
-             x:Class="YUGIOH_Master.Cells.CardCellView">
-  <ViewCell.View>
-      <StackLayout>
-            <Label Text="{Binding card.title_english}"/>
-      </StackLayout>
-  </ViewCell.View>
-</ViewCell>
+             x:Class="YUGIOH_Master.Cells.CardCellView"
+       CornerRadius="10"
+       Margin="5"
+       Padding="0"
+       WidthRequest="100">
+
+    <StackLayout Margin="0" Padding="0">
+        <!--<Label Text="{Binding card.title_english}"
+                       HorizontalOptions="Center"
+                       FontSize="Large"          
+                       FontAttributes="Bold"/>-->
+
+        <Label Text="{Binding card.raritySelected}"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
+        <ffimage:CachedImage    Source="{Binding card.imageSelected}"
+                                Aspect="AspectFit"
+                                LoadingPlaceholder="BackCard.png"
+                                ErrorPlaceholder="BackCard.png"
+                                CacheDuration="10"
+                                RetryCount="1"
+                                CacheType="Disk"
+                                >
+            <ffimage:CachedImage.GestureRecognizers>
+                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="TapGestureRecognizer_Tapped"/>
+            </ffimage:CachedImage.GestureRecognizers>
+        </ffimage:CachedImage>
+
+
+
+    </StackLayout>
+</Frame>
